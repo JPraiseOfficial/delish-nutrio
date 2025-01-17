@@ -13,13 +13,32 @@ const transporter = nodemailer.createTransport({
 });
 
 export const sendVerifyEmailLink = async (email, token) => {
-    const verifyEmailLink = `http://${process.env.FRONTEND_URL}/verifyEmail.html?token=${token}`;
+    const verifyEmailLink = `${process.env.FRONTEND_URL}/verifyEmail.html?token=${token}`;
 
     const message = {
-        from: process.env.EMAIL_USER,
+        from: 'Delish Nutrio',
         to: email,
-        subject: "Delish Nutrio - Verify Your Email",
+        subject: "Verify Your Email",
         html: `<p>Thank you for registering with Delish Nutrio! <br> Click the link below to confirm your email address</p> <p><a href='${verifyEmailLink}'>${verifyEmailLink}</a><br><b>Please Note that this link will expire in the next 1 Hour!</b></p>`,
+    }
+
+    await transporter.sendMail(message);
+};
+
+export const sendPasswordResetLink = async (email, token) => {
+    const resetURL = `${process.env.FRONTEND_URL}/resetpassword.html?token=${token}`;
+
+    const message = {
+        from: 'Delish Nutrio',
+        to: email,
+        subject: "Reset Your Password",
+        html: `
+        <h1>You have requested a password reset</h1>
+        <p>Please click on the following link to reset your password:</p>
+        <a href="${resetURL}" clicktracking=off>${resetURL}</a>
+        <p>If you did not request this, please ignore this email and your password will remain unchanged.</p>
+        <p><b>This link will expire in 10 minutes.</b></p>
+        `,
     }
 
     await transporter.sendMail(message);

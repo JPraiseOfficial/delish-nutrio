@@ -19,5 +19,7 @@ router.get('/user', auth, userControllers.getUser);
 router.put('/updateuser', auth, userControllers.updateUser);
 router.delete('/deleteuser', auth, userControllers.deleteUser);
 router.get('/logout', authController.logout);
+router.post('/forgotpassword', authController.forgotPassword);
+router.post('/resetpassword/:token', authController.resetPassword);
 
 export default router
