@@ -37,3 +37,14 @@ export const UserProfile = mysqldb.define(
 
 User.hasOne(UserProfile);
 UserProfile.belongsTo(User);
+
+export const UserMealPlan = mysqldb.define('User_Meal_Plan', {
+    breakfast: {type: DataTypes.JSON, allowNull: true},
+    lunch: {type: DataTypes.JSON, allowNull: true},
+    dinner: {type: DataTypes.JSON, allowNull: true},
+    snacks: {type: DataTypes.JSON, allowNull: true},
+    other: {type: DataTypes.JSON, allowNull: true},
+}, {timestamps: true});
+
+User.hasOne(UserMealPlan);
+UserMealPlan.belongsTo(User);

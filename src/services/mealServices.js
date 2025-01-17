@@ -1,4 +1,5 @@
 import { Meal } from "../models/mealModel.js"
+import { UserMealPlan } from "../models/UserModels.js"
 
 // calculate Basal Metabolic rate (BMR)
 export const basalMetabolicRate = (age, gender, weight, height) => {
@@ -70,5 +71,8 @@ export const generateMeal = async (dietary_preferences, health_goals, medical_co
     }
 
     return mealPlan;
+}
 
+export const saveMealPlan = async (UserId, mealPlan) => {
+    const saveMeal = await UserMealPlan.create({ ...mealPlan, UserId });
 }
