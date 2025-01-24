@@ -235,63 +235,50 @@
       }
     },
     "/api/generatemeal": {
-      "get": {
+      "post": {
         "description": "",
         "parameters": [
           {
-            "name": "gender",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "age",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "country",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "region",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "dietary_preferences",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "health_goals",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "activity_levels",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "allergies",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "medical_condition",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "height",
-            "in": "query",
-            "type": "string"
-          },
-          {
-            "name": "weight",
-            "in": "query",
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "gender": {
+                  "example": "any"
+                },
+                "age": {
+                  "example": "any"
+                },
+                "country": {
+                  "example": "any"
+                },
+                "region": {
+                  "example": "any"
+                },
+                "dietary_preferences": {
+                  "example": "any"
+                },
+                "health_goals": {
+                  "example": "any"
+                },
+                "activity_levels": {
+                  "example": "any"
+                },
+                "allergies": {
+                  "example": "any"
+                },
+                "medical_condition": {
+                  "example": "any"
+                },
+                "height": {
+                  "example": "any"
+                },
+                "weight": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
