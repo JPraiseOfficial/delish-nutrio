@@ -42,7 +42,13 @@ export const verifyEmail = async (token) => {
 }
 
 export const createNewProfile = async (gender, age, country, region, dietary_preferences, health_goals, activity_levels, allergies, medical_condition, height, weight, UserId) => {
+    const user = await UserProfile.findOne({where: {UserId}});
+    if (user) {
+        throw new Error("Profile already exists")
+    };
+    
     const profile = await UserProfile.create({gender, age, country, region, dietary_preferences, health_goals, activity_levels, allergies, medical_condition, height, weight, UserId});
+    return profile;
 }
 
 export const getUserProfile = async (UserId) => {

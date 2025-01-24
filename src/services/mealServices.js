@@ -74,6 +74,11 @@ export const generateMeal = async (dietary_preferences, health_goals, medical_co
 }
 
 export const saveMealPlan = async (UserId, mealPlan) => {
+    const user = await UserMealPlan.findOne({ where: { UserId } });
+    if (user) {
+        user.update({ ...mealPlan });
+    }
+
     const saveMeal = await UserMealPlan.create({ ...mealPlan, UserId });
 }
 
