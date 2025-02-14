@@ -37,4 +37,4 @@ Full documentation is available [here](https://delish-nutrio.onrender.com/api-do
 Contributions are welcome! Feel free to fork the repo and submit a PR.  
 
 ## 📜 License
-This project is licensed under the MIT License.
+This project is licensed under the MIT License. See the [LICENSE](./LICENSE) file for details.
