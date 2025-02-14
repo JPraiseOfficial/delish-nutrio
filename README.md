@@ -1,6 +1,6 @@
 # 🍽️ Delish Nutrio API
 
-This project is a capstone project at TechCrush Bootcamp, designed to showcase backend development skills by building a robust API for a web application that allows users to create and manage their accounts, set up a health profile, and generate personalized meal plans based on their preferences and dietary needs. The API is built with Node.js and Express and is hosted on [Render](https://delish-nutrio.onrender.com/api-docs/#/).
+This project is a capstone project at TechCrush Bootcamp, designed to showcase backend development skills by building a robust API for a web application that allows users to create and manage their accounts, set up a health profile, and generate personalized meal plans based on their preferences and dietary needs. The API is built with Node.js and Express and is hosted on [Render](https://delish-nutrio.onrender.com/).
 
 ## 🚀 Live API & Documentation
 🔗 **Base URL:** [`https://delish-nutrio.onrender.com/`](https://delish-nutrio.onrender.com/)  
