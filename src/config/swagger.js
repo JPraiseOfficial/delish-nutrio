@@ -41,6 +41,67 @@ const swaggerOptions = {
                         confirmPassword: {type: "string", example: "password123"},
                     }
                 },
+                UserProfile: {
+                    type: "object",
+                    required: ["gender", "age", "country", "region", "dietary_preferences", "health_goals", "activity_levels", "allergies", "medical_condition", "height", "weight"],
+                    properties: {
+                        gender: {
+                            type: "string",
+                            enum: ["male", "Female"],
+                        },
+                        age: {
+                            type: "string", 
+                            example: "25"
+                        },
+                        country: {
+                            type: "string",
+                            example: "Nigeria",
+                        },
+                        region: {
+                            type: "string",
+                            enum: ["South-South", "South-West", "South-East", "Nationwide"],
+                            example: "Lagos",
+                        },
+                        dietary_preferences: {
+                            type: "string",
+                            example: "Vegetarian",
+                        },
+                        health_goals: {
+                            type: "string",
+                            enum: ["weight gain", "weight loss"]
+                        },
+                        activity_levels: {
+                            type: "string",
+                            enum: ["High", "Medium", "Low"]
+                        },
+                        allergies: {
+                            type: "srting",
+                            example: "meat"
+                        },
+                        medical_condition: {
+                            type: "string",
+                            example: "Diabetes"
+                        },
+                        height: {
+                            type: "string",
+                            example: "10"
+                        },
+                        weight: {
+                            type: "string",
+                            example: "30"
+                        }
+                    }
+                },
+                UserMealPlan: {
+                    type: "object",
+                    properties: {
+                        breakfast: {type: "array"},
+                        lunch: {type: "array"},
+                        dinner: {type: "array"},
+                        snacks: {type: "array"},
+                        other: {type: "array"},
+                    }
+                }
             }
         }
     },

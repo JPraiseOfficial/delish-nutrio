@@ -74,11 +74,100 @@ router.get('/verifyemail/:token', userControllers.verifyEmail);
  */
 router.post('/login', authController.login);
 
+/**
+ * @swagger
+ * /api/newprofile:
+ *   post:
+ *     summary: Create a new diet profile for diet recommendation
+ *     security:
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserProfile'
+ *     responses:
+ *       201: 
+ *         description: Profile created
+ *       401:
+ *         description: Access denied
+ *       400:
+ *         description: Bad Request
+ */
 router.post('/newprofile', auth, userControllers.createNewProfile);
+
+/**
+ * @swagger
+ * /api/profile:
+ *   get:
+ *     summary: Displays user's diet profile
+ *     security:
+ *       - cookieAuth: []
+ *     responses:
+ *       200:
+ *         User Profile
+ *       401:
+ *         Access Denied
+ */
 router.get('/profile', auth, userControllers.getUserProfile);
+
+/**
+ * @swagger
+ * /api/updateprofile:
+ *   put:
+ *     summary: Updates user's diet profile
+ *     security:
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/UserProfile'
+ *     responses:
+ *       201: 
+ *         description: Profile updated
+ *       401:
+ *         description: Access denied
+ *       400:
+ *         description: Bad Request
+ */
 router.put('/updateprofile', auth, userControllers.updateUserProfile);
 
+/**
+ * @swagger
+ * /api/generatemeal:
+ *   post:
+ *     summary: Generates user's meal plan
+ *     security:
+ *       - cookieAuth: []
+ *     requestBody:
+ *       required: true
+ *       content: 
+ *         application/json:
+ *           schema:
+ *             ref: '#/components/schemas/UserProfile'
+ *     responses:
+ *       200:
+ *         description: Meal generated and saved
+ *       401:
+ *         description: Access Denied
+ */
 router.post('/generatemeal', auth, mealControllers.generateMeal);
+
+/**
+ * /api/mealplan:
+ *   get:
+ *     summary: Gets user's meal plan
+ *     security:
+ *       - cookieAuth: []
+ *     responses:
+ *       200: 
+ *         description: User meal plan
+ *       401:
+ *         description: Access Denied
+ */
 router.get('/mealplan', auth, mealControllers.getMealPlan);
 
 
@@ -92,8 +181,8 @@ router.get('/mealplan', auth, mealControllers.getMealPlan);
  *     responses:
  *       200:
  *         description: User details
- *       400:
- *         description: User not found
+ *       401:
+ *         description: Access Denied
  */
 router.get('/user', auth, userControllers.getUser);
 
@@ -113,8 +202,8 @@ router.get('/user', auth, userControllers.getUser);
  *     responses:
  *       200:
  *         description: User updated
- *       400:
- *         description: Bad request
+ *       401:
+ *         description: Access Denied
  */
 router.put('/updateuser', auth, userControllers.updateUser);
 
@@ -128,8 +217,8 @@ router.put('/updateuser', auth, userControllers.updateUser);
  *     responses:
  *       200:
  *         description: User deleted
- *       400:
- *         description: Bad request
+ *       401:
+ *         description: Access Denied
  */
 router.delete('/deleteuser', auth, userControllers.deleteUser);
 
@@ -143,6 +232,8 @@ router.delete('/deleteuser', auth, userControllers.deleteUser);
  *     responses:
  *       200:
  *         description: Logout successful
+ *       401:
+ *         description: Access Denied
  */
 router.get('/logout', authController.logout);
 
