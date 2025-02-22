@@ -1,6 +1,6 @@
 import express from "express";
 import * as userControllers from './controllers/userController.js';
-import { validateForm } from "./middleware/formValidation.js";
+import { validateForm, checkPasswordMatch } from "./middleware/formValidation.js";
 import * as authController from "./controllers/authController.js";
 import auth from "./middleware/auth.js";
 import * as mealControllers from "./controllers/mealControllers.js";
@@ -297,8 +297,8 @@ router.post('/forgotpassword', authController.forgotPassword);
  *       200:
  *         description: Password reset successful
  *       400:
- *         description: Invalid or expired token
+ *         description: Bad request
  */
-router.post('/resetpassword/:token', authController.resetPassword);
+router.post('/resetpassword/:token', checkPasswordMatch, authController.resetPassword);
 
 export default router
