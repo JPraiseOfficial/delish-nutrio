@@ -18,7 +18,7 @@ export const createNewUser = async (req, res) => {
             return res.status(201).json({ message: "User created but unable to send verification link. Please, make sure you verify your email", error: emailerror.message });
         }
 
-        res.status(201).json({ message: "User created" })
+        res.status(201).json({ message: "User created. A verification link has been sent to your email, Click it to verrify your email" })
     } catch (error) {
         res.status(400).json({ error: error.message })
     }
@@ -87,6 +87,9 @@ export const getUserProfile = async (req, res) => {
     const UserId = req.user
     try {
         const profile = await services.getUserProfile(UserId);
+        if (profile === null) {
+            return res.status(400).json({message: "Profile not found"})
+        }
         res.status(200).json(profile)
     } catch (error) {
         res.status(400).json({ error: error.message })

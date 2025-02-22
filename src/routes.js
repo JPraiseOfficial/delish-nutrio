@@ -20,7 +20,7 @@ const router = express.Router();
 *             $ref: '#/components/schemas/User'
 *     responses:
 *       201:
-*         description: User created
+*         description: User created. A verification link has been sent to your email. Click it to verify your email.
 *       400:
 *         description: Bad request
 */
@@ -111,6 +111,8 @@ router.post('/newprofile', auth, userControllers.createNewProfile);
  *         description: User Profile
  *       401:
  *         description: Access Denied
+ *       400:
+ *         description: Bad request
  */
 router.get('/profile', auth, userControllers.getUserProfile);
 

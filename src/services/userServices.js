@@ -53,9 +53,6 @@ export const createNewProfile = async (gender, age, country, region, dietary_pre
 
 export const getUserProfile = async (UserId) => {
     const profile = await UserProfile.findOne({where: {UserId}})
-    if (!profile) {
-        throw new Error("Profile not found")
-    }
     return profile;
 }
 
