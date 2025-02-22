@@ -11,13 +11,13 @@ const swaggerOptions = {
         },
         servers: [
             {
+                url: "https://delish-nutrio.onrender.com/",
+                description: "Live server",
+            },
+            {
                 url: "http://localhost:3000",
                 description: "Local server",
             },
-            {
-                url: "https://delish-nutrio.onrender.com/",
-                description: "Live server",
-            }
         ],
         components: {
             securitySchemes: {
