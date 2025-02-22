@@ -71,6 +71,8 @@ router.get('/verifyemail/:token', userControllers.verifyEmail);
  *         description: Login successful
  *       400:
  *         description: Invalid email or password
+ *       500:
+ *         description: Internal Server Error
  */
 router.post('/login', authController.login);
 
@@ -259,6 +261,8 @@ router.get('/logout', authController.logout);
  *        description: Password reset link has been sent to your mail
  *      404:
  *        description: User not found
+ *      500:
+ *        description: Email not sent, please, try again later
  */
 router.post('/forgotpassword', authController.forgotPassword);
 
