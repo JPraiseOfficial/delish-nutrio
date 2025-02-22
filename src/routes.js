@@ -101,14 +101,14 @@ router.post('/newprofile', auth, userControllers.createNewProfile);
  * @swagger
  * /api/profile:
  *   get:
- *     summary: Displays user's diet profile
+ *     summary: Gets user's diet profile
  *     security:
  *       - cookieAuth: []
  *     responses:
  *       200:
- *         User Profile
+ *         description: User Profile
  *       401:
- *         Access Denied
+ *         description: Access Denied
  */
 router.get('/profile', auth, userControllers.getUserProfile);
 
@@ -147,7 +147,7 @@ router.put('/updateprofile', auth, userControllers.updateUserProfile);
  *       content: 
  *         application/json:
  *           schema:
- *             ref: '#/components/schemas/UserProfile'
+ *             $ref: '#/components/schemas/UserProfile'
  *     responses:
  *       200:
  *         description: Meal generated and saved
@@ -157,6 +157,7 @@ router.put('/updateprofile', auth, userControllers.updateUserProfile);
 router.post('/generatemeal', auth, mealControllers.generateMeal);
 
 /**
+ * @swagger
  * /api/mealplan:
  *   get:
  *     summary: Gets user's meal plan
