@@ -162,11 +162,11 @@ router.get('/logout', authController.logout);
  *                 type: string
  *                 description: User email
  *                 example: johndoe@email.com
- *    responses:
- *     200:
- *      description: Password reset link has been sent to your mail
- *    404:
- *     description: User not found
+ *     responses:
+ *      200:
+ *        description: Password reset link has been sent to your mail
+ *      404:
+ *        description: User not found
  */
 router.post('/forgotpassword', authController.forgotPassword);
 
@@ -182,26 +182,26 @@ router.post('/forgotpassword', authController.forgotPassword);
  *       description: Token sent to user email
  *       schema:
  *         type: string
- *   requestBody:
- *     required: true
- *     content:
- *       application/json:
- *         schema:
- *           type: object
- *           properties:
- *             password:
- *               type: string
- *               description: New password
- *               example: password123456
- *            confirmPassword:
- *               type: string
- *               description: New password
- *               example: password123456
- *   responses:
- *     200:
- *       description: Password reset successful
- *     400:
- *       description: Invalid or expired token
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               password:
+ *                 type: string
+ *                 description: New password
+ *                 example: password123456
+ *               confirmPassword:
+ *                 type: string
+ *                 description: New password
+ *                 example: password123456
+ *     responses:
+ *       200:
+ *         description: Password reset successful
+ *       400:
+ *         description: Invalid or expired token
  */
 router.post('/resetpassword/:token', authController.resetPassword);
 
