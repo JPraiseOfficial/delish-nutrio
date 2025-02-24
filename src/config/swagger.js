@@ -9,6 +9,17 @@ const swaggerOptions = {
             version: "1.0.0",
             description: "This is the API documentation for Delish Nutrio",
         },
+        tags: [
+            {
+                name: "User",
+                description: "APIs for User management operations (registration, profile, etc.)"
+            },
+            {
+                name: "Meal",
+                description: "API for meal plan generation and retrieval"
+            }
+
+        ],
         servers: [
             {
                 url: "https://delish-nutrio.onrender.com/",

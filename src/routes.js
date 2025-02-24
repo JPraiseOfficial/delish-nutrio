@@ -12,6 +12,7 @@ const router = express.Router();
 * /api/register:
 *   post:
 *     summary: Register a new user
+*     tags: [User]
 *     requestBody:
 *       required: true
 *       content:
@@ -31,6 +32,7 @@ router.post('/register', validateForm, userControllers.createNewUser);
  * /api/verifyemail/{token}:
  *   get:
  *     summary: Verify user email
+ *     tags: [User]
  *     parameters:
  *      - in: path
  *        name: token
@@ -51,6 +53,7 @@ router.get('/verifyemail/:token', userControllers.verifyEmail);
  * /api/login:
  *   post:
  *     summary: User login
+ *     tags: [User]
  *     requestBody:
  *       required: true
  *       content:
@@ -81,6 +84,7 @@ router.post('/login', authController.login);
  * /api/newprofile:
  *   post:
  *     summary: Create a new diet profile for diet recommendation
+ *     tags: [User]
  *     security:
  *       - cookieAuth: []
  *     requestBody:
@@ -104,6 +108,7 @@ router.post('/newprofile', auth, userControllers.createNewProfile);
  * /api/profile:
  *   get:
  *     summary: Gets user's diet profile
+ *     tags: [User]
  *     security:
  *       - cookieAuth: []
  *     responses:
@@ -121,6 +126,7 @@ router.get('/profile', auth, userControllers.getUserProfile);
  * /api/updateprofile:
  *   put:
  *     summary: Updates user's diet profile
+ *     tags: [User]
  *     security:
  *       - cookieAuth: []
  *     requestBody:
@@ -144,6 +150,7 @@ router.put('/updateprofile', auth, userControllers.updateUserProfile);
  * /api/generatemeal:
  *   post:
  *     summary: Generates user's meal plan
+ *     tags: [Meal]
  *     security:
  *       - cookieAuth: []
  *     requestBody:
@@ -165,6 +172,7 @@ router.post('/generatemeal', auth, mealControllers.generateMeal);
  * /api/mealplan:
  *   get:
  *     summary: Gets user's meal plan
+ *     tags: [Meal]
  *     security:
  *       - cookieAuth: []
  *     responses:
@@ -181,6 +189,7 @@ router.get('/mealplan', auth, mealControllers.getMealPlan);
  * /api/user:
  *   get:
  *     summary: Get user details
+ *     tags: [User]
  *     security:
  *       - cookieAuth: []
  *     responses:
@@ -196,6 +205,7 @@ router.get('/user', auth, userControllers.getUser);
  * /api/updateuser:
  *   put:
  *     summary: Update user details
+ *     tags: [User]
  *     security:
  *       - cookieAuth: []
  *     requestBody:
@@ -217,6 +227,7 @@ router.put('/updateuser', auth, userControllers.updateUser);
  * /api/deleteuser:
  *   delete:
  *     summary: Delete user account
+ *     tags: [User]
  *     security:
  *       - cookieAuth: []
  *     responses:
@@ -232,6 +243,7 @@ router.delete('/deleteuser', auth, userControllers.deleteUser);
  * /api/logout:
  *   get:
  *     summary: User logout
+ *     tags: [User]
  *     security:
  *       - cookieAuth: []
  *     responses:
@@ -247,6 +259,7 @@ router.get('/logout', authController.logout);
  * /api/forgotpassword:
  *   post:
  *     summary: Forgot password
+ *     tags: [User]
  *     requestBody:
  *       required: true
  *       content:
@@ -273,6 +286,7 @@ router.post('/forgotpassword', authController.forgotPassword);
  * /api/resetpassword/{token}:
  *   post:
  *     summary: Reset password
+ *     tags: [User]
  *     parameters:
  *     - in: path
  *       name: token
