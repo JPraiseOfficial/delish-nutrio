@@ -136,7 +136,7 @@ router.get('/profile', auth, userControllers.getUserProfile);
  *           schema:
  *             $ref: '#/components/schemas/UserProfile'
  *     responses:
- *       201: 
+ *       200: 
  *         description: Profile updated
  *       401:
  *         description: Access denied
