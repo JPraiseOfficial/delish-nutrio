@@ -1,14 +1,13 @@
 import { Sequelize } from "sequelize";
-import { config } from "dotenv";
-config();
+import { env } from "./env.js";
 
-let databaseName = process.env.DB_NAME
-let username = process.env.DB_USER
-let password = process.env.DB_PASS
+let databaseName = env.mysqldb.name
+let username = env.mysqldb.user
+let password = env.mysqldb.password
 
 const mysqldb = new Sequelize(databaseName, username, password, {
-  host: process.env.DB_HOST,
-  port: process.env.DB_PORT,
+  host: env.mysqldb.host,
+  port: env.mysqldb.port,
   dialect: 'mysql'
 });
 

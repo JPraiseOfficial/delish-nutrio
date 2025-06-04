@@ -1,20 +1,19 @@
 import nodemailer from "nodemailer";
-import dotenv from "dotenv";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
-dotenv.config();
+import { env } from "../config/env.js";
 
 const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
-    secure: process.env.EMAIL_PORT === '465',
+    host: env.email.host,
+    port: env.email.port,
+    secure: env.email.port === 465,
     auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
+        user: env.email.user,
+        pass: env.email.pass
     }
 } as SMTPTransport.Options);
 
 export const sendVerifyEmailLink = async (email: string, token: string) => {
-    const verifyEmailLink = `${process.env.FRONTEND_URL}/verifyEmail.html?token=${token}`;
+    const verifyEmailLink = `${env.frontendUrl}/verifyEmail.html?token=${token}`;
 
     const message = {
         from: 'Delish Nutrio',
@@ -27,7 +26,7 @@ export const sendVerifyEmailLink = async (email: string, token: string) => {
 };
 
 export const sendPasswordResetLink = async (email: string, token: string) => {
-    const resetURL = `${process.env.FRONTEND_URL}/resetpassword.html?token=${token}`;
+    const resetURL = `${env.frontendUrl}/resetpassword.html?token=${token}`;
 
     const message = {
         from: 'Delish Nutrio',
