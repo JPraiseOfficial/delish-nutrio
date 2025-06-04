@@ -28,7 +28,7 @@ app.use(express.static("public"));
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
  
-async function startServer(params) {
+async function startServer() {
     await connectMySQL();
     await connectMongoDB()
     

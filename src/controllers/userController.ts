@@ -1,30 +1,40 @@
 import * as services from "../services/userServices.js";
 import { sendVerifyEmailLink } from "../services/emailServices.js";
+import { Request, Response } from "express";
 
 
-export const createNewUser = async (req, res) => {
+export const createNewUser = async (req: Request, res: Response): Promise<void> => {
     const { firstname, lastname, username, phone_number, email, password, confirmPassword } = req.body;
     const {emailToken, emailTokenExpires} = services.generateVerifyEmailToken();
 
     try {
-        const user = await services.createNewUser(firstname, lastname, username, phone_number, email, password, emailToken, emailTokenExpires);
+        const user = await services.createNewUser({firstname, lastname, username, phone_number, email, password, verifyEmailToken: emailToken, verifyEmailTokenExpires: emailTokenExpires});
 
         // Send email verification link
         try {
             await sendVerifyEmailLink(email, emailToken);
         } catch (emailerror) {
             const updatedUser = await services.updateUser(firstname, lastname, username, phone_number, email, password, null, null, user.id);
+
+            let errorMsg = "Unknown error"
+            if (emailerror instanceof Error) {
+                errorMsg = emailerror.message;
+            }
             
-            return res.status(201).json({ message: "User created but unable to send verification link. Please, make sure you verify your email", error: emailerror.message });
+            res.status(201).json({ message: "User created but unable to send verification link. Please, make sure you verify your email", error: errorMsg });
         }
 
         res.status(201).json({ message: "User created. A verification link has been sent to your email, Click it to verrify your email" })
     } catch (error) {
-        res.status(400).json({ error: error.message })
+        let errorMsg = "Unknown error";
+        if (error instanceof Error) {
+            errorMsg = error.message;
+        }
+        res.status(400).json({ error: errorMsg })
     }
 }
 
-export const getUser = async (req, res) => {
+export const getUser = async (req: Request, res: Response) => {
     const userId = req.user
     try {
         const user = await services.getUser(userId);
@@ -33,7 +43,7 @@ export const getUser = async (req, res) => {
         res.status(400).json({ error: error.message })
     }
 }
-export const updateUser = async (req, res) => {
+export const updateUser = async (req: Request, res: Response) => {
     const userId = req.user
     const { firstname, lastname, username, phone_number, email, password, confirmPassword } = req.body;
 
@@ -46,7 +56,7 @@ export const updateUser = async (req, res) => {
     }
 }
 
-export const deleteUser = async (req, res) => {
+export const deleteUser = async (req: Request, res: Response) => {
     const UserId = req.user
     try {
         const user = await services.deleteUser(UserId);
@@ -57,7 +67,7 @@ export const deleteUser = async (req, res) => {
     }
 }
 
-export const verifyEmail = async (req, res) => {
+export const verifyEmail = async (req: Request, res: Response) => {
     const { token } = req.params;
     try {
         const verifyEmail = await services.verifyEmail(token);
@@ -72,7 +82,7 @@ export const verifyEmail = async (req, res) => {
     }
 }
 
-export const createNewProfile = async (req, res) => {
+export const createNewProfile = async (req: Request, res: Response) => {
     const UserId = req.user
     const { gender, age, country, region, dietary_preferences, health_goals, activity_levels, allergies, medical_condition, height, weight } = req.body;
     try {
@@ -83,7 +93,7 @@ export const createNewProfile = async (req, res) => {
     }
 }
 
-export const getUserProfile = async (req, res) => {
+export const getUserProfile = async (req: Request, res: Response) => {
     const UserId = req.user
     try {
         const profile = await services.getUserProfile(UserId);
@@ -96,7 +106,7 @@ export const getUserProfile = async (req, res) => {
     }
 }
 
-export const updateUserProfile = async (req, res) => {
+export const updateUserProfile = async (req: Request, res: Response) => {
     const UserId = req.user
     const { gender, age, country, region, dietary_preferences, health_goals, activity_levels, allergies, medical_condition, height, weight } = req.body;
 

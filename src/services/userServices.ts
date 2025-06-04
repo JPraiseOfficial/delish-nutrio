@@ -2,14 +2,15 @@ import {User, UserProfile } from "../models/UserModels.js";
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from "uuid";
 import { Op } from "sequelize";
+import type { CreateNewUser } from "../types/userServices.types";
 
-export const createNewUser = async (firstname, lastname, username, phone_number, email, password, verifyEmailToken, verifyEmailTokenExpires) => {
-    const passwordHash = bcrypt.hashSync(password, 10)
-    const user = await User.create({firstname, lastname, username, phone_number, email, password: passwordHash, verifyEmailToken, verifyEmailTokenExpires});
+export const createNewUser = async (data: CreateNewUser) => {
+    data.password = bcrypt.hashSync(data.password, 10)
+    const user = await User.create({...data});
     return user;
 }
 
-export const getUser = async (userId) => {
+export const getUser = async (userId: number) => {
     const user = await User.findOne({where: {id: userId}});
     return user;
 }

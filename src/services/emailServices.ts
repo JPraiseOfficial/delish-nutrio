@@ -1,5 +1,6 @@
 import nodemailer from "nodemailer";
 import dotenv from "dotenv";
+import SMTPTransport from "nodemailer/lib/smtp-transport";
 dotenv.config();
 
 const transporter = nodemailer.createTransport({
@@ -10,9 +11,9 @@ const transporter = nodemailer.createTransport({
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
     }
-});
+} as SMTPTransport.Options);
 
-export const sendVerifyEmailLink = async (email, token) => {
+export const sendVerifyEmailLink = async (email: string, token: string) => {
     const verifyEmailLink = `${process.env.FRONTEND_URL}/verifyEmail.html?token=${token}`;
 
     const message = {
@@ -25,7 +26,7 @@ export const sendVerifyEmailLink = async (email, token) => {
     await transporter.sendMail(message);
 };
 
-export const sendPasswordResetLink = async (email, token) => {
+export const sendPasswordResetLink = async (email: string, token: string) => {
     const resetURL = `${process.env.FRONTEND_URL}/resetpassword.html?token=${token}`;
 
     const message = {
