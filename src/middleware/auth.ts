@@ -1,6 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken"
 import type { Request, Response, NextFunction } from "express";
-import { env } from "../config/env";
+import { env } from "../config/env.js";
 
 const auth = async (req: Request, res: Response, next: NextFunction) => {
     const token = req.cookies.jwtToken;

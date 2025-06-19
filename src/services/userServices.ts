@@ -2,11 +2,11 @@ import {User, UserProfile } from "../models/UserModels.js";
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from "uuid";
 import { Op } from "sequelize";
-import type { CreateNewUser } from "../types/userServices.types";
+import type { CreateNewUser, UpdateUser } from "../types/userServices.types";
 
 export const createNewUser = async (data: CreateNewUser) => {
     data.password = bcrypt.hashSync(data.password, 10)
-    const user = await User.create({...data});
+    const user = await User.create({...data, isVerified: false});
     return user;
 }
 
@@ -15,10 +15,16 @@ export const getUser = async (userId: number) => {
     return user;
 }
 
-export const updateUser = async (firstname, lastname, username, phone_number, email, password, verifyEmailToken, verifyEmailTokenExpires, userId) => {
-    const user = await User.findOne({where: {id: userId}});
-    const passwordHash = bcrypt.hashSync(password, 10)
-    const updatedUser = await user.update({firstname, lastname, username, phone_number, email, password:passwordHash, verifyEmailToken, verifyEmailTokenExpires});
+export const updateUser = async (data: UpdateUser) => {
+    const user = await User.findOne({where: {id: data.userId}});
+
+    if (!user) {
+        throw new Error("User not found");
+    }
+    if (data.password) {
+        data.password = bcrypt.hashSync(data.password, 10)
+    }
+    const updatedUser = await user.update({...data});
     return updatedUser;
 }
 

@@ -14,7 +14,11 @@ export const createNewUser = async (req: Request, res: Response): Promise<void> 
         try {
             await sendVerifyEmailLink(email, emailToken);
         } catch (emailerror) {
-            const updatedUser = await services.updateUser(firstname, lastname, username, phone_number, email, password, null, null, user.id);
+            const updatedUser = await services.updateUser({ 
+                verifyEmailToken: null, 
+                verifyEmailTokenExpires: null, 
+                userId: user.id
+            });
 
             let errorMsg = "Unknown error"
             if (emailerror instanceof Error) {
@@ -22,6 +26,7 @@ export const createNewUser = async (req: Request, res: Response): Promise<void> 
             }
             
             res.status(201).json({ message: "User created but unable to send verification link. Please, make sure you verify your email", error: errorMsg });
+            return
         }
 
         res.status(201).json({ message: "User created. A verification link has been sent to your email, Click it to verrify your email" })
@@ -34,25 +39,37 @@ export const createNewUser = async (req: Request, res: Response): Promise<void> 
     }
 }
 
-export const getUser = async (req: Request, res: Response) => {
-    const userId = req.user
+export const getUser = async (req: Request, res: Response): Promise<void> => {
+    const userId = req.user as number;
     try {
         const user = await services.getUser(userId);
         res.status(200).json(user)
     } catch (error) {
-        res.status(400).json({ error: error.message })
+        if (error instanceof Error && error.message === "User not found") {
+            res.status(404).json({ error: error.message })
+            return
+        }
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message })
+            return
+        }
     }
 }
-export const updateUser = async (req: Request, res: Response) => {
-    const userId = req.user
+export const updateUser = async (req: Request, res: Response): Promise<void> => {
+    const userId = req.user as number;
     const { firstname, lastname, username, phone_number, email, password, confirmPassword } = req.body;
 
     try {
-        const updatedUser = await services.updateUser(firstname, lastname, username, phone_number, email, password, null, null, userId);
+        const updatedUser = await services.updateUser({firstname, lastname, username, phone_number, email, password, userId});
         res.clearCookie("jwtToken");
         res.status(200).json({ message: "User updated, Please, log in again", updatedUser })
     } catch (error) {
-        res.status(400).json({ error: error.message })
+        if (error instanceof Error && error.message === "User not found") {
+            res.status(404).json({ error: error.message })
+        }
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message })
+        }
     }
 }
 
