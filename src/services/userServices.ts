@@ -2,16 +2,36 @@ import {User, UserProfile } from "../models/UserModels.js";
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from "uuid";
 import { Op } from "sequelize";
-import type { CreateNewUser, UpdateUser } from "../types/userServices.types";
+import type { CreateNewUser, retunedUser, UpdateUser, UserProfileAttributes } from "../types/userServices.types";
 
 export const createNewUser = async (data: CreateNewUser) => {
     data.password = bcrypt.hashSync(data.password, 10)
     const user = await User.create({...data, isVerified: false});
-    return user;
+
+    const userData: retunedUser = {
+        id: user.id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        phone_number: user.phone_number,
+        email: user.email,
+    }
+    return userData
 }
 
 export const getUser = async (userId: number) => {
     const user = await User.findOne({where: {id: userId}});
+    if (!user) {
+        throw new Error("User not found");
+    }
+
+    const userData: retunedUser = {
+        id: user.id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        phone_number: user.phone_number,
+        email: user.email,
+    }
+    return userData
 }
 
 export const updateUser = async (data: UpdateUser) => {
@@ -24,7 +44,15 @@ export const updateUser = async (data: UpdateUser) => {
         data.password = bcrypt.hashSync(data.password, 10)
     }
     const updatedUser = await user.update({...data});
-    return updatedUser;
+    const userData: retunedUser = {
+        id: user.id,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        username: user.username,
+        phone_number: user.phone_number,
+        email: user.email,
+    }
+    return userData
 }
 
 export const deleteUser = async (UserId: number) => {
@@ -50,23 +78,26 @@ export const verifyEmail = async (token: string) => {
     return updatedUser;
 }
 
-export const createNewProfile = async (gender, age, country, region, dietary_preferences, health_goals, activity_levels, allergies, medical_condition, height, weight, UserId) => {
-    const user = await UserProfile.findOne({where: {UserId}});
+export const createNewProfile = async (data: UserProfileAttributes) => {
+    const user = await UserProfile.findOne({where: {UserId: data.UserId}});
     if (user) {
         throw new Error("Profile already exists")
     };
     
-    const profile = await UserProfile.create({gender, age, country, region, dietary_preferences, health_goals, activity_levels, allergies, medical_condition, height, weight, UserId});
+    const profile = await UserProfile.create({...data});
     return profile;
 }
 
-export const getUserProfile = async (UserId) => {
+export const getUserProfile = async (UserId: number) => {
     const profile = await UserProfile.findOne({where: {UserId}})
     return profile;
 }
 
-export const updateProfile = async (gender, age, country, region, dietary_preferences, health_goals, activity_levels, allergies, medical_condition, height, weight, UserId) => {
-    const profile = await UserProfile.findOne({where: {UserId}});
-    const newProfile = await profile.update({gender, age, country, region, dietary_preferences, health_goals, activity_levels, allergies, medical_condition, height, weight})
+export const updateProfile = async (data: UserProfileAttributes) => {
+    const profile = await UserProfile.findOne({where: {UserId: data.UserId}});
+    if (!profile) {
+        throw new Error('User has no profile')
+    }
+    const newProfile = await profile.update({...data})
     return newProfile;
 }

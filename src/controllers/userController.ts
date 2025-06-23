@@ -1,6 +1,6 @@
 import * as services from "../services/userServices.js";
 import { sendVerifyEmailLink } from "../services/emailServices.js";
-import { Request, Response } from "express";
+import e, { Request, Response } from "express";
 
 
 export const createNewUser = async (req: Request, res: Response): Promise<void> => {
@@ -107,37 +107,49 @@ export const verifyEmail = async (req: Request, res: Response) => {
 }
 
 export const createNewProfile = async (req: Request, res: Response) => {
-    const UserId = req.user
+    const UserId = req.user as number
     const { gender, age, country, region, dietary_preferences, health_goals, activity_levels, allergies, medical_condition, height, weight } = req.body;
     try {
-        const userProfile = await services.createNewProfile(gender, age, country, region, dietary_preferences, health_goals, activity_levels, allergies, medical_condition, height, weight, UserId )
+        const userProfile = await services.createNewProfile({gender, age, country, region, dietary_preferences, health_goals, activity_levels, allergies, medical_condition, height, weight, UserId} )
         res.status(201).json({ message: "Profile created", userProfile })
     } catch (error) {
-        res.status(400).json({ error: error.message })
+        if (error instanceof Error && error.message === "Profile already exists") {
+            res.status(400).json({ error: error.message })
+            return
+        } else if (error instanceof Error) {
+        res.status(500).json({ error: error.message })
+        }
     }
 }
 
-export const getUserProfile = async (req: Request, res: Response) => {
-    const UserId = req.user
+export const getUserProfile = async (req: Request, res: Response): Promise<void> => {
+    const UserId = req.user as number
     try {
         const profile = await services.getUserProfile(UserId);
-        if (profile === null) {
-            return res.status(400).json({message: "Profile not found"})
+        if (!profile) {
+            res.status(404).json({ error: "User has no profile" })
+            return
         }
         res.status(200).json(profile)
     } catch (error) {
-        res.status(400).json({ error: error.message })
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message })
+        }
     }
 }
 
 export const updateUserProfile = async (req: Request, res: Response) => {
-    const UserId = req.user
+    const UserId = req.user as number
     const { gender, age, country, region, dietary_preferences, health_goals, activity_levels, allergies, medical_condition, height, weight } = req.body;
 
     try {
-        const updateProfile = await services.updateProfile(gender, age, country, region, dietary_preferences, health_goals, activity_levels, allergies, medical_condition, height, weight, UserId)
+        const updateProfile = await services.updateProfile({gender, age, country, region, dietary_preferences, health_goals, activity_levels, allergies, medical_condition, height, weight, UserId})
         res.status(200).json({ message: "Profile updated", updateProfile })
     } catch (error) {
+        if (error instanceof Error && error.message === "User has no profile") {
+            res.status(404).json({ error: error.message })
+        } else if (error instanceof Error) {
         res.status(400).json({ error: error.message })
+        }
     }
 }
