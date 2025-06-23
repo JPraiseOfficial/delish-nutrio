@@ -1,8 +1,9 @@
-import { body, validationResult } from "express-validator";
+import { body, validationResult, Meta } from "express-validator";
 import {User} from "../models/UserModels.js";
+import { Request, Response, NextFunction } from "express"; 
 
 // Custom validations
-const validateIfEmailExists = async (value) => {
+const validateIfEmailExists = async (value: string) => {
     const existingEmail = await User.findOne({ where: { email: value } })
 
     if (existingEmail) {
@@ -12,7 +13,7 @@ const validateIfEmailExists = async (value) => {
     }
 }
 
-const validateIfPhoneNumberExists = async (value) => {
+const validateIfPhoneNumberExists = async (value: string) => {
     const existingNumber = await User.findOne({ where: { phone_number: value } })
 
     if (existingNumber) {
@@ -22,7 +23,7 @@ const validateIfPhoneNumberExists = async (value) => {
     }
 }
 
-const confirmPassword = (value, { req }) => {
+const confirmPassword = (value: string, {req}: Meta) => {
     if (value !== req.body.password) {
         throw new Error("Password does not match");
     } else {
@@ -48,10 +49,11 @@ export const validateForm = [
         .isLength({ min: 6 }).withMessage('Password must be at least 5 characters'),
     body('confirmPassword')
         .custom(confirmPassword),
-    (req, res, next) => {
+    (req: Request, res: Response, next: NextFunction) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            res.status(400).json({ errors: errors.array() });
+            return;
         }
         next();
     },
@@ -63,10 +65,11 @@ export const checkPasswordMatch = [
         .isLength({ min: 6 }).withMessage('Password must be at least 5 characters'),
     body('confirmPassword')
         .custom(confirmPassword),
-    (req, res, next) => {
+    (req: Request, res: Response, next: NextFunction) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-            return res.status(400).json({ errors: errors.array() });
+            res.status(400).json({ errors: errors.array() });
+            return;
         }
         next();
     },
