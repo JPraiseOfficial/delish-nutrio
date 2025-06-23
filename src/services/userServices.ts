@@ -12,7 +12,6 @@ export const createNewUser = async (data: CreateNewUser) => {
 
 export const getUser = async (userId: number) => {
     const user = await User.findOne({where: {id: userId}});
-    return user;
 }
 
 export const updateUser = async (data: UpdateUser) => {
@@ -28,8 +27,11 @@ export const updateUser = async (data: UpdateUser) => {
     return updatedUser;
 }
 
-export const deleteUser = async (UserId) => {
+export const deleteUser = async (UserId: number) => {
     const user = await User.findOne({where: {id: UserId}});
+    if (!user) {
+        throw new Error('User not found');
+    }
     const deletedUser = await user.destroy();
 }
 
@@ -39,7 +41,7 @@ export const generateVerifyEmailToken = () => {
     return {emailToken, emailTokenExpires}
 }
 
-export const verifyEmail = async (token) => {
+export const verifyEmail = async (token: string) => {
     const user = await User.findOne({where: {verifyEmailToken: token, verifyEmailTokenExpires: { [Op.gt]: Date.now() } }});
     
     if (!user) return;

@@ -73,14 +73,18 @@ export const updateUser = async (req: Request, res: Response): Promise<void> => 
     }
 }
 
-export const deleteUser = async (req: Request, res: Response) => {
-    const UserId = req.user
+export const deleteUser = async (req: Request, res: Response): Promise<void> => {
+    const UserId = req.user as number;
     try {
         const user = await services.deleteUser(UserId);
         res.clearCookie("jwtToken");
         res.status(200).json({ message: "User deleted" })
     } catch (error) {
-        res.status(400).json({ error: error.message })
+    if (error instanceof Error && error.message === "User not found") {
+            res.status(404).json({ error: error.message })
+        } else if (error instanceof Error) {
+            res.status(500).json({ error: error.message })
+        }
     }
 }
 
@@ -90,12 +94,15 @@ export const verifyEmail = async (req: Request, res: Response) => {
         const verifyEmail = await services.verifyEmail(token);
 
         if (!verifyEmail) {
-            return res.status(400).json({ message: "Invalid or expired token" });
+            res.status(400).json({ message: "Invalid or expired token" });
+            return
         }
 
         res.status(200).json({ message: "Email verified" })
     } catch (error) {
-        res.status(400).json({ error: error.message }) 
+        if (error instanceof Error) {
+            res.status(400).json({ error: error.message }) 
+        }
     }
 }
 

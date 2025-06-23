@@ -11,13 +11,14 @@ export const generateJwtToken = (id: number, expiresIn?: string) => {
         { expiresIn: expiresIn || env.jwt.expiration })
 }
 
-export const login = async (req: Request, res: Response) => {
+export const login = async (req: Request, res: Response): Promise<void> => {
     const { emailOrPhone, password } = req.body;
 
     try {
         // check if field is empty
         if (!emailOrPhone || !password) {
-            return res.status(400).json({ message: "Please, fill in the required details" });
+            res.status(400).json({ message: "Please, fill in the required details" });
+            return;
         }
 
         // check whether user used email or phone number
@@ -29,7 +30,8 @@ export const login = async (req: Request, res: Response) => {
         }
 
         if(!user) {
-            return res.status(400).json({ message: "Invalid email or password" });
+            res.status(400).json({ message: "Invalid email or password" });
+            return;
         }
 
         // check if password matches email/phone number
@@ -42,12 +44,14 @@ export const login = async (req: Request, res: Response) => {
                 sameSite: "none",
                 secure: true
             });
-            return res.status(200).json({ message: "Login successful" })
+            res.status(200).json({ message: "Login successful" })
         } else {
-            return res.status(400).json({ message: "Invalid email or password" });
+            res.status(400).json({ message: "Invalid email or password" });
         }
     } catch (error) {
-        return res.status(500).json({ error })
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        }
     }
 }
 
@@ -56,12 +60,13 @@ export const logout = async (req: Request, res: Response) => {
     res.status(200).json({ message: "Logout successful" });
 }
 
-export const forgotPassword = async (req: Request, res: Response) => {
+export const forgotPassword = async (req: Request, res: Response): Promise<void> => {
     const { email } = req.body;
     try {
         const user = await User.findOne({ where: { email } });
         if (!user) {
-            return res.status(404).json({ message: "User not found" });
+            res.status(404).json({ message: "User not found" });
+            return;
         }
 
         const token = generateJwtToken(user.id, "10m");
@@ -69,18 +74,18 @@ export const forgotPassword = async (req: Request, res: Response) => {
         try {
             await sendPasswordResetLink(email, token);
         } catch (error) {
-            return res.status(500).json({ message: 'Email not sent, Please try again later', error });
+            res.status(500).json({ message: 'Email not sent, Please try again later', error });
         }
 
-        return res.status(200).json({ message: "Password reset link has been sent to your mail" });
+        res.status(200).json({ message: "Password reset link has been sent to your mail" });
     } catch (error) {
         if (error instanceof Error) {
-            return res.status(500).json({ message: error.message });
+            res.status(500).json({ message: error.message });
         }
     }
 }
 
-export const resetPassword = async (req: Request, res: Response) => {
+export const resetPassword = async (req: Request, res: Response): Promise<void> => {
     const { token } = req.params;
     const { password, confirmPassword } = req.body;
 
@@ -90,16 +95,17 @@ export const resetPassword = async (req: Request, res: Response) => {
 
         const user = await User.findOne({ where: { id: userId } });
         if (!user) {
-            return res.status(404).json({ message: "User not found" });
+            res.status(404).json({ message: "User not found" });
+            return
         } else {
         user.password = bcrypt.hashSync(password, 10);
         await user.save();
 
-        return res.status(200).json({ message: "Password reset successful" });
+        res.status(200).json({ message: "Password reset successful" });
         }
 
     } catch (error) {
-        return res.status(400).json({ message: "Invalid or expired token", error });
+        res.status(400).json({ message: "Invalid or expired token", error });
 
     }
 }

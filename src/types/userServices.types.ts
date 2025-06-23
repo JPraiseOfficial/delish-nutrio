@@ -12,4 +12,3 @@ export interface UserAttributes {
 
 export type CreateNewUser = Omit<UserAttributes, 'id'>
 export type UpdateUser = {userId: number} & Partial<UserAttributes>;
-export type return
