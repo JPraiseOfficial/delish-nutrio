@@ -5,7 +5,7 @@ import {
   GenerateMealType,
   MealPlanType,
   totalDailyEnergyExpenditureType,
-} from "../types/userServices.types.js";
+} from "../types/types.js";
 
 // calculate Basal Metabolic rate (BMR)
 export const basalMetabolicRate = ({

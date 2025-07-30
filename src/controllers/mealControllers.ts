@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import * as mealServices from "../services/mealServices.js";
-import { GenerateMealType } from "../types/userServices.types.js";
+import { GenerateMealType } from "../types/types.js";
 
 export const generateMeal = async (req: Request, res: Response) => {
   const userId = req.user;

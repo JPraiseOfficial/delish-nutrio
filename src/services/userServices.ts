@@ -7,7 +7,7 @@ import type {
   retunedUser,
   UpdateUser,
   UserProfileAttributes,
-} from "../types/userServices.types.js";
+} from "../types/types.js";
 
 export const createNewUser = async (data: CreateNewUser) => {
   data.password = bcrypt.hashSync(data.password, 10);
