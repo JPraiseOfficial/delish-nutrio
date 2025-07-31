@@ -49,6 +49,8 @@ If you want to run it locally (for development or contribution):
    npm run dev
    ```
    **Note**: The API depends on your own data. You’ll need to seed your database with meals and user data to test all features.
+5. Server is live at `http://localhost:3000` and Swagger docs are available at `http://localhost:3000/api/v2/docs`.  
+   **Note:** If you configured a different port in your `.env` or `server.ts`, update the URL accordingly.
 
 ---
 
