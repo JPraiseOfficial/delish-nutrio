@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node dist/app.js",
-    "dev": "nodemon dist/app.js",
+    "dev": "tsx watch src/app.ts",
     "build": "tsc",
     "postbuild": "robocopy src\\public dist\\public /E",
     "swagger": "node docs/swagger.js",
@@ -44,8 +44,7 @@
     "@types/nodemailer": "^6.4.17",
     "@types/swagger-jsdoc": "^6.0.4",
     "@types/swagger-ui-express": "^4.1.8",
-    "nodemon": "^3.1.10",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.20.3",
     "typescript": "^5.8.3"
   }
 }
